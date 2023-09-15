@@ -46,6 +46,17 @@ dependencies:
   #GETX
   get: ^4.6.6
 
+  #Signing BTN
+  flutter_signin_button: ^2.0.0
+
+  #FIREBASE
+  google_sign_in: ^6.1.5
+  firebase_auth: ^4.2.5
+  firebase_core: ^2.15.1
+
+  #Shared Preference
+  shared_preferences: ^2.2.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

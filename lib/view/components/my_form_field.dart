@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
-import '../../theme/color/colors.dart';
-import '../../utills/decoration_utils.dart';
+import 'package:my_profile/theme/color/colors.dart';
+import 'package:my_profile/utills/decoration_utils.dart';
 
 class MyFormField extends StatelessWidget {
   final TextEditingController controller;
@@ -36,11 +35,15 @@ class MyFormField extends StatelessWidget {
   final bool? alignLabelWithHint;
   final double? fontSize;
   final Color? hintColor;
-  final TextStyle? hintTextStyle;
   final Iterable<String>? autofillHints;
   final InputDecoration? decoration;
   final Widget? suffixIcon;
   final TextAlign? textAlign;
+  final EdgeInsetsGeometry? contentPadding;
+  final AutovalidateMode? autovalidateMode;
+  final bool? autofocus;
+  final FocusNode? focusNode;
+  final String? initialValue;
 
   const MyFormField({
     Key? key,
@@ -53,7 +56,6 @@ class MyFormField extends StatelessWidget {
     this.textInputType = TextInputType.text,
     this.maxLines,
     this.fontSize,
-    this.hintTextStyle,
     this.maxLength,
     this.validator,
     this.minLines,
@@ -80,22 +82,25 @@ class MyFormField extends StatelessWidget {
     this.obscureText = false,
     this.decoration,
     this.textAlign,
+    this.contentPadding,
+    this.autovalidateMode,
+    this.autofocus,
+    this.focusNode,
+    this.initialValue,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
       controller: controller,
       enabled: isEnable,
       obscureText: obscureText,
+      autovalidateMode: autovalidateMode ?? autoValidateMode,
+      autofocus: autofocus ?? false,
+      focusNode: focusNode,
+      initialValue: initialValue,
       textAlignVertical: textAlignVertical,
-      autofillHints: autofillHints ??
-          const [
-            AutofillHints.name,
-            AutofillHints.email,
-            AutofillHints.password,
-            AutofillHints.newPassword
-          ],
+      autofillHints: autofillHints,
       textAlign: textAlign ?? TextAlign.start,
       readOnly: isReadOnly,
       style: TextStyle(
@@ -126,10 +131,24 @@ class MyFormField extends StatelessWidget {
               hintColor: hintColor,
               prefixIcon: prefixIconUnderLine,
               borderRadius: borderRadius,
+              contentPadding: contentPadding,
               icon: prefixIcon),
+      validator: isShowDefaultValidator == true
+          ? validator ??
+              (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please insert $labelText';
+                }
+                return null;
+              }
+          : validator,
       onChanged: onChanged,
       onTap: onTap,
+      onFieldSubmitted: onSubmited,
       autocorrect: isAutoCurrect,
     );
   }
+
+  static const AutovalidateMode autoValidateMode =
+      AutovalidateMode.onUserInteraction;
 }

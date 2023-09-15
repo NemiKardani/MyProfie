@@ -4,8 +4,17 @@ import 'package:my_profile/theme/color/colors.dart';
 
 class LoginController extends GetxController {
   TextEditingController emailTextEditingController = TextEditingController();
+  TextEditingController passwordTextEditingController = TextEditingController();
 
   RxBool isPasswordVisable = false.obs;
+  RxBool isRememberMe = false.obs;
+
+  checkRememberMe() {
+    isRememberMe.value = !isRememberMe.value;
+    refresh();
+  }
+
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   Widget passwordShowHideWidget() {
     if (isPasswordVisable.isTrue) {

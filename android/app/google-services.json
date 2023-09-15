@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "230256510751",
+    "project_id": "profileapp-a0e2b",
+    "storage_bucket": "profileapp-a0e2b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:230256510751:android:220031347dafd72f93d22a",
+        "android_client_info": {
+          "package_name": "com.my.profile.my_profile"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAkFL9ie4MQQyGFmvzIj5RmKEN-4aLcl8c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

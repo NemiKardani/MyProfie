@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:my_profile/routes/routes.dart';
@@ -5,6 +6,7 @@ import 'package:my_profile/theme/get_theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  Firebase.initializeApp();
   NkGetXTheme.systemChromeStyle;
   runApp(const MyApp());
 }
