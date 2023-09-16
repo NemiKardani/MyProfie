@@ -39,4 +39,8 @@ class LoginController extends GetxController {
           ));
     }
   }
+
+  bool matchCredential(String email, String password) {
+    return email == "nemikardani23@gmail.com" && password == "Nemi";
+  }
 }

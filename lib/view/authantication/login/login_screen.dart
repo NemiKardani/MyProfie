@@ -53,6 +53,15 @@ class LoginScreen extends GetView<LoginController> {
                   ),
                   isShowDefaultValidator: true,
                   isRequire: true,
+                  validator: (value) {
+                    if (value != null && value.isEmpty) {
+                      return "Please Insert Email";
+                    } else if (GetUtils.isEmail(value) == false) {
+                      return "Please Insert Valid Email";
+                    } else {
+                      return null;
+                    }
+                  },
                   labelText: "Email"),
               SizedBox(
                 height: context.height * 0.02,
@@ -102,8 +111,38 @@ class LoginScreen extends GetView<LoginController> {
               ),
               MyThemeButton(
                 buttonText: "Login",
-                onPressed: () {
-                  if (controller.formKey.currentState!.validate()) {}
+                onPressed: () async {
+                  if (controller.formKey.currentState!.validate()) {
+                    if (controller.matchCredential(
+                        controller.emailTextEditingController.text,
+                        controller.passwordTextEditingController.text)) {
+                      if (controller.isRememberMe.isTrue) {
+                        SessionHelper.loginSavedData = await SessionHelper()
+                            .setLoginData(UserResponse(
+                                email:
+                                    controller.emailTextEditingController.text,
+                                password: controller
+                                    .passwordTextEditingController.text,
+                                userName: "Nemi Kardani",
+                                userImagePath: null,
+                                skills: [
+                                  "Android-Iso Application Development",
+                                  "Flutter",
+                                  "Dart Programming",
+                                  "Java Programming",
+                                  "Kotlin Programming"
+                                ],
+                                workExpirience:
+                                    "1.6 Year (Mar 2022 - Present)"));
+                      }
+                      Get.offNamedUntil(
+                        AppRoutes.homeScreen,
+                        (route) => false,
+                      );
+                    } else {
+                      Get.snackbar("Error", "Invalid Email or Password");
+                    }
+                  }
                 },
               ),
               SizedBox(
@@ -137,11 +176,25 @@ class LoginScreen extends GetView<LoginController> {
         accessToken: googleSignInAuthentication.accessToken,
         idToken: googleSignInAuthentication.idToken,
       );
-      await _auth.signInWithCredential(credential).then((value) {
-        SessionHelper().setLoginData(
-            UserResponse(email: value.user!.email, password: value.user!.uid));
-
-        Get.offNamed(AppRoutes.homeScreen);
+      await _auth.signInWithCredential(credential).then((value) async {
+        SessionHelper.loginSavedData =
+            await SessionHelper().setLoginData(UserResponse(
+                email: value.user!.email,
+                password: value.user!.uid,
+                userName: value.user!.displayName,
+                userImagePath: value.user!.photoURL,
+                skills: [
+                  "Android-Iso Application Development",
+                  "Flutter",
+                  "Dart Programming",
+                  "Java Programming",
+                  "Kotlin Programming"
+                ],
+                workExpirience: "1.6 Year (Mar 2022 - Present)"));
+        Get.offNamedUntil(
+          AppRoutes.homeScreen,
+          (route) => false,
+        );
       });
       _user = _auth.currentUser!;
     }

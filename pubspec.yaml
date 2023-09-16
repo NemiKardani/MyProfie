@@ -57,6 +57,12 @@ dependencies:
   #Shared Preference
   shared_preferences: ^2.2.1
 
+  #FilePicker
+  file_picker: ^5.3.3
+
+  #CAMERA
+  camera: ^0.10.5+3
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -39,8 +39,8 @@ class MyThemeButton extends StatelessWidget {
       onPressed: onPressed,
       textTheme: theme.buttonTheme.textTheme,
       shape: shape ??
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-      padding: padding,
+          RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      padding: padding ?? EdgeInsets.zero,
       color: color ?? theme.buttonTheme.colorScheme?.background,
       /* focusColor: color ??
                 theme.buttonTheme.colorScheme?.background.withOpacity(0.7),*/
