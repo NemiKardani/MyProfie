@@ -134,7 +134,23 @@ class LoginScreen extends GetView<LoginController> {
                                 ],
                                 workExpirience:
                                     "1.6 Year (Mar 2022 - Present)"));
+                      } else {
+                        SessionHelper.loginSavedData = UserResponse(
+                            email: controller.emailTextEditingController.text,
+                            password:
+                                controller.passwordTextEditingController.text,
+                            userName: "Nemi Kardani",
+                            userImagePath: null,
+                            skills: [
+                              "Android-Iso Application Development",
+                              "Flutter",
+                              "Dart Programming",
+                              "Java Programming",
+                              "Kotlin Programming"
+                            ],
+                            workExpirience: "1.6 Year (Mar 2022 - Present)");
                       }
+
                       Get.offNamedUntil(
                         AppRoutes.homeScreen,
                         (route) => false,

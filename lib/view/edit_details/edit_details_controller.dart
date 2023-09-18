@@ -36,11 +36,18 @@ class EditDetailsController extends GetxController {
   }
 
   updateData(UserResponse userResponse) async {
-    SessionHelper.loginSavedData =
-        await SessionHelper().setLoginData(userResponse);
-    itemUpdated.value = false;
-    Get.snackbar("Success", "Details Updated");
-    refresh();
+    await SessionHelper().getLoginData().then((value) async {
+      if (value != null) {
+        SessionHelper.loginSavedData =
+            await SessionHelper().setLoginData(userResponse);
+      } else {
+        SessionHelper.loginSavedData = userResponse;
+      }
+
+      itemUpdated.value = false;
+      Get.snackbar("Success", "Details Updated");
+      refresh();
+    });
   }
 
   loadDataToLocal() {
@@ -54,6 +61,19 @@ class EditDetailsController extends GetxController {
             value.workExpirience ?? workExpirienceTextEditingController.text;
         userImage.value = value.userImagePath ?? userImage.value;
         skills.value = value.skills ?? [];
+        refresh();
+      } else {
+        userNameTextEditingController.text =
+            SessionHelper.loginSavedData?.userName ??
+                userNameTextEditingController.text;
+        emailTextEditingController.text = SessionHelper.loginSavedData?.email ??
+            emailTextEditingController.text;
+        workExpirienceTextEditingController.text =
+            SessionHelper.loginSavedData?.workExpirience ??
+                workExpirienceTextEditingController.text;
+        userImage.value =
+            SessionHelper.loginSavedData?.userImagePath ?? userImage.value;
+        skills.value = SessionHelper.loginSavedData?.skills ?? [];
         refresh();
       }
     });
