@@ -43,6 +43,9 @@ dependencies:
 
   fluttertoast: ^8.2.2
 
+  mouse_parallax: ^1.1.0
+  velocity_x: ^4.1.1
+  sensors_plus: ^3.0.3
   #GETX
   get: ^4.6.6
 
@@ -62,6 +65,9 @@ dependencies:
 
   #CAMERA
   camera: ^0.10.5+3
+
+  #Motion Card
+  motion: ^1.4.0
 
 dev_dependencies:
   flutter_test:

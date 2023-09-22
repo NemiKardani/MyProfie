@@ -3,12 +3,14 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:motion/motion.dart';
 import 'package:my_profile/routes/routes.dart';
 import 'package:my_profile/theme/color/colors.dart';
 import 'package:my_profile/utills/session/sessionhelper.dart';
 import 'package:my_profile/utills/session/sessionmanager.dart';
 import 'package:my_profile/view/components/my_regular_text.dart';
 import 'package:my_profile/view/components/my_theme_button.dart';
+import 'package:my_profile/view/permission/gyroschope_permission.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -19,7 +21,22 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    if (Motion.instance.isPermissionRequired &&
+        !Motion.instance.isPermissionGranted) {
+      showPermissionRequestDialog(
+        context,
+        onDone: () {
+          setState(() {});
+        },
+      );
+    }
     return Scaffold(
         body: SafeArea(
       minimum: const EdgeInsets.all(16.0),
@@ -43,6 +60,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   );
                 },
                 icon: Icon(Icons.logout))),
+        //SizedBox(height: 100, width: 100, child: DemoPage()),
+        //MyWidget(child: Placeholder()),
         SizedBox(
           height: context.height * 0.04,
         ),
@@ -50,7 +69,17 @@ class _HomeScreenState extends State<HomeScreen> {
         SizedBox(
           height: context.height * 0.04,
         ),
-        basicDetails(context),
+        Motion.only(
+          //elevation: 90,
+          borderRadius: BorderRadius.circular(10),
+          child: Card(
+            margin: EdgeInsets.zero,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: basicDetails(context),
+            ),
+          ),
+        ),
       ],
     );
   }
@@ -65,6 +94,11 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         detailComponent(
             "Email", SessionHelper.loginSavedData!.email.toString(), context),
+        SizedBox(
+          height: context.height * 0.02,
+        ),
+        detailComponent("Address",
+            SessionHelper.loginSavedData!.location.toString(), context),
         SizedBox(
           height: context.height * 0.02,
         ),
@@ -139,6 +173,7 @@ class _HomeScreenState extends State<HomeScreen> {
         Flexible(
           child: MyRegularText(
             maxlines: mainName.length,
+            align: TextAlign.start,
             label: "${mainName}",
             fontSize: 16,
           ),
@@ -153,9 +188,11 @@ class _HomeScreenState extends State<HomeScreen> {
         height: context.height * 0.16,
         width: context.height * 0.17,
         // color: Colors.yellow,
-        child: Stack(
-          children: [
-            SizedBox(
+        child: Motion.elevated(
+          elevation: 90,
+          borderRadius: BorderRadius.circular(10),
+          child: Card(
+            child: SizedBox(
                 // color: Colors.yellow,
                 height: context.height * 0.16,
                 width: context.height * 0.16,
@@ -177,6 +214,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     .toString()
                                     .isNotEmpty
                             ? Image.file(
+                                fit: BoxFit.cover,
                                 File(SessionHelper.loginSavedData!.userImagePath
                                     .toString()),
                               )
@@ -186,13 +224,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                   ),
                 )),
-            /*  const Positioned(
-              right: 1,
-              bottom: 1,
-              //child: Icon(Icons.edit, size: 22, color: primaryColor,
-              child: Icon(Icons.edit, size: 22),
-            )*/
-          ],
+          ),
         ),
       ),
     );

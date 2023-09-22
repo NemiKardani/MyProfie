@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:motion/motion.dart';
 import 'package:my_profile/model/user_responce.dart';
 import 'package:my_profile/routes/routes.dart';
 import 'package:my_profile/theme/color/colors.dart';
@@ -19,7 +20,7 @@ class LoginScreen extends GetView<LoginController> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        minimum: const EdgeInsets.all(16.0).copyWith(bottom: 0),
+        // minimum: const EdgeInsets.all(16.0).copyWith(bottom: 0),
         child: Form(
           key: controller.formKey,
           child: ListView(
@@ -45,121 +46,188 @@ class LoginScreen extends GetView<LoginController> {
               SizedBox(
                 height: context.height * 0.04,
               ),
-              MyFormField(
-                  controller: controller.emailTextEditingController,
-                  prefixIconUnderLine: const Icon(
-                    Icons.email_outlined,
-                    color: textFieldBorderColor,
-                  ),
-                  isShowDefaultValidator: true,
-                  isRequire: true,
-                  validator: (value) {
-                    if (value != null && value.isEmpty) {
-                      return "Please Insert Email";
-                    } else if (GetUtils.isEmail(value) == false) {
-                      return "Please Insert Valid Email";
-                    } else {
-                      return null;
-                    }
-                  },
-                  labelText: "Email"),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Motion.only(
+                  //elevation: 90,
+
+                  child: MyFormField(
+                      controller: controller.emailTextEditingController,
+                      prefixIconUnderLine: const Icon(
+                        Icons.email_outlined,
+                        color: textFieldBorderColor,
+                      ),
+                      isShowDefaultValidator: true,
+                      isRequire: true,
+                      validator: (value) {
+                        if (value != null && value.isEmpty) {
+                          return "Please Insert Email";
+                        } else if (GetUtils.isEmail(value) == false) {
+                          return "Please Insert Valid Email";
+                        } else {
+                          return null;
+                        }
+                      },
+                      labelText: "Email"),
+                ),
+              ),
               SizedBox(
                 height: context.height * 0.02,
               ),
-              Obx(() {
-                return MyFormField(
-                    validator: (value) {
-                      if (value != null && value.isEmpty) {
-                        return "Please Insert Password";
-                      }
-                      return null;
-                    },
-                    isRequire: true,
-                    alignLabelWithHint: true,
-                    textInputType: TextInputType.visiblePassword,
-                    obscureText: controller.isPasswordVisable.value,
-                    maxLines: 1,
-                    prefixIconUnderLine: const Icon(
-                      Icons.password_outlined,
-                      color: textFieldBorderColor,
-                    ),
-                    controller: controller.passwordTextEditingController,
-                    suffixIcon: controller.passwordShowHideWidget(),
-                    labelText: "Password");
-              }),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Motion.only(
+                  //elevation: 90,
+                  child: Obx(() {
+                    return MyFormField(
+                        validator: (value) {
+                          if (value != null && value.isEmpty) {
+                            return "Please Insert Password";
+                          }
+                          return null;
+                        },
+                        isRequire: true,
+                        alignLabelWithHint: true,
+                        textInputType: TextInputType.visiblePassword,
+                        obscureText: controller.isPasswordVisable.value,
+                        maxLines: 1,
+                        prefixIconUnderLine: const Icon(
+                          Icons.password_outlined,
+                          color: textFieldBorderColor,
+                        ),
+                        controller: controller.passwordTextEditingController,
+                        suffixIcon: controller.passwordShowHideWidget(),
+                        labelText: "Password");
+                  }),
+                ),
+              ),
               SizedBox(
                 height: context.height * 0.016,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  const MyRegularText(
-                    label: "Remember Me",
-                  ),
-                  Obx(() {
-                    return Checkbox.adaptive(
-                      value: controller.isRememberMe.value,
-                      onChanged: (value) {
-                        controller.checkRememberMe();
-                      },
-                    );
-                  })
-                ],
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    const MyRegularText(
+                      label: "Remember Me",
+                    ),
+                    Obx(() {
+                      return Checkbox.adaptive(
+                        value: controller.isRememberMe.value,
+                        onChanged: (value) {
+                          controller.checkRememberMe();
+                        },
+                      );
+                    })
+                  ],
+                ),
               ),
               SizedBox(
                 height: context.height * 0.08,
               ),
-              MyThemeButton(
-                buttonText: "Login",
-                onPressed: () async {
-                  if (controller.formKey.currentState!.validate()) {
-                    if (controller.matchCredential(
-                        controller.emailTextEditingController.text,
-                        controller.passwordTextEditingController.text)) {
-                      if (controller.isRememberMe.isTrue) {
-                        SessionHelper.loginSavedData = await SessionHelper()
-                            .setLoginData(UserResponse(
-                                email:
-                                    controller.emailTextEditingController.text,
-                                password: controller
-                                    .passwordTextEditingController.text,
-                                userName: "Nemi Kardani",
-                                userImagePath: null,
-                                skills: [
-                                  "Android-Iso Application Development",
-                                  "Flutter",
-                                  "Dart Programming",
-                                  "Java Programming",
-                                  "Kotlin Programming"
-                                ],
-                                workExpirience:
-                                    "1.6 Year (Mar 2022 - Present)"));
-                      } else {
-                        SessionHelper.loginSavedData = UserResponse(
-                            email: controller.emailTextEditingController.text,
-                            password:
-                                controller.passwordTextEditingController.text,
-                            userName: "Nemi Kardani",
-                            userImagePath: null,
-                            skills: [
-                              "Android-Iso Application Development",
-                              "Flutter",
-                              "Dart Programming",
-                              "Java Programming",
-                              "Kotlin Programming"
-                            ],
-                            workExpirience: "1.6 Year (Mar 2022 - Present)");
-                      }
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: MyThemeButton(
+                  buttonText: "Login",
+                  onPressed: () async {
+                    if (controller.formKey.currentState!.validate()) {
+                      if (controller.matchCredential(
+                          controller.emailTextEditingController.text,
+                          controller.passwordTextEditingController.text)) {
+                        if (controller.isRememberMe.isTrue) {
+                          SessionHelper.loginSavedData = UserResponse(
+                              email: controller.emailTextEditingController.text,
+                              password:
+                                  controller.passwordTextEditingController.text,
+                              userName: "Nemi Kardani",
+                              skills: [
+                                "Android-Iso Application Development",
+                                "Flutter",
+                                "Dart Programming",
+                                "Java Programming",
+                                "Kotlin Programming"
+                              ],
+                              location: "Ahmedabad,Gujarat,India,Zip 380054",
+                              competedProjects: [
+                                {
+                                  "title": "Project 1",
+                                  "image": "https://picsum.photos/200/300",
+                                },
+                                {
+                                  "title": "Project 1",
+                                  "image": "https://picsum.photos/200/300",
+                                },
+                                {
+                                  "title": "Project 1",
+                                  "image": "https://picsum.photos/200/300",
+                                },
+                                {
+                                  "title": "Project 1",
+                                  "image": "https://picsum.photos/200/300",
+                                },
+                                {
+                                  "title": "Project 1",
+                                  "image": "https://picsum.photos/200/300",
+                                },
+                              ],
+                              dateOfBirth: "28 August 2001",
+                              education: "Diploma in Computer Engineering",
+                              gender: "Male",
+                              workExpirience: "1.6 Year (Mar 2022 - Present)");
+                        } else {
+                          SessionHelper.loginSavedData = UserResponse(
+                              location: "Ahmedabad,Gujarat,India,Zip 380054",
+                              email: controller.emailTextEditingController.text,
+                              password:
+                                  controller.passwordTextEditingController.text,
+                              userName: "Nemi Kardani",
+                              userImagePath: null,
+                              skills: [
+                                "Android-Iso Application Development",
+                                "Flutter",
+                                "Dart Programming",
+                                "Java Programming",
+                                "Kotlin Programming"
+                              ],
+                              competedProjects: [
+                                {
+                                  "title": "Project 1",
+                                  "image": "https://picsum.photos/200/300",
+                                },
+                                {
+                                  "title": "Project 1",
+                                  "image": "https://picsum.photos/200/300",
+                                },
+                                {
+                                  "title": "Project 1",
+                                  "image": "https://picsum.photos/200/300",
+                                },
+                                {
+                                  "title": "Project 1",
+                                  "image": "https://picsum.photos/200/300",
+                                },
+                                {
+                                  "title": "Project 1",
+                                  "image": "https://picsum.photos/200/300",
+                                },
+                              ],
+                              dateOfBirth: "28 August 2001",
+                              education: "Diploma in Computer Engineering",
+                              gender: "Male",
+                              workExpirience: "1.6 Year (Mar 2022 - Present)");
+                        }
 
-                      Get.offNamedUntil(
-                        AppRoutes.homeScreen,
-                        (route) => false,
-                      );
-                    } else {
-                      Get.snackbar("Error", "Invalid Email or Password");
+                        Get.offNamedUntil(
+                          AppRoutes.homeScreen,
+                          (route) => false,
+                        );
+                      } else {
+                        Get.snackbar("Error", "Invalid Email or Password");
+                      }
                     }
-                  }
-                },
+                  },
+                ),
               ),
               SizedBox(
                 height: context.height * 0.03,

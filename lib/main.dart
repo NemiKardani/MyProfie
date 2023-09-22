@@ -2,11 +2,16 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:motion/motion.dart';
 import 'package:my_profile/routes/routes.dart';
 import 'package:my_profile/theme/get_theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await Motion.instance.initialize();
+
+  Motion.instance.setUpdateInterval(120.fps);
 
   if (kIsWeb) {
     await Firebase.initializeApp(

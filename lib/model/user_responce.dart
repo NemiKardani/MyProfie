@@ -5,6 +5,11 @@ class UserResponse {
   String? userImagePath;
   List<String>? skills;
   String? workExpirience;
+  String? education;
+  String? dateOfBirth;
+  List<Map<String, dynamic>>? competedProjects;
+  String? gender;
+  String? location;
 
   UserResponse({
     this.email,
@@ -13,6 +18,11 @@ class UserResponse {
     this.userImagePath,
     this.skills,
     this.workExpirience,
+    this.education,
+    this.dateOfBirth,
+    this.competedProjects,
+    this.gender,
+    this.location,
   });
 
   factory UserResponse.fromJson(Map<String, dynamic> json) => UserResponse(
@@ -22,6 +32,11 @@ class UserResponse {
         userImagePath: json["userImagePath"],
         skills: json["skills"].cast<String>(),
         workExpirience: json["workExpirience"],
+        education: json["study"],
+        dateOfBirth: json["dateOfBirth"],
+        competedProjects: json["competedProjects"],
+        gender: json["gender"],
+        location: json["location"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -31,5 +46,10 @@ class UserResponse {
         "userImagePath": userImagePath,
         "skills": skills,
         "workExpirience": workExpirience,
+        "education": education,
+        "dateOfBirth": dateOfBirth,
+        "competedProjects": competedProjects,
+        "gender": gender,
+        "location": location,
       };
 }
